@@ -1,6 +1,7 @@
 package com.learn.rpc.server;
 
 import com.learn.rpc.annotation.RpcProvide;
+import com.learn.rpc.netty1.MyServerHandler;
 import com.learn.rpc.protocol.RpcDecoder;
 import com.learn.rpc.protocol.RpcEncoder;
 import com.learn.rpc.protocol.RpcRequest;
@@ -8,6 +9,7 @@ import com.learn.rpc.protocol.RpcResponse;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -49,11 +51,11 @@ public class ServerInitializer implements ApplicationContextAware, InitializingB
                     childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel channel) throws Exception {
-                            channel.pipeline()
-                                    .addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0,4 ,0, 4))
-                                    .addLast(new RpcDecoder(RpcRequest.class))
-                                    .addLast(new RpcEncoder(RpcResponse.class))
-                                    .addLast(new MyServerHandler());
+                            ChannelPipeline pipeline = channel.pipeline();
+                            pipeline.addLast(new RpcEncoder(RpcResponse.class));
+                            pipeline.addLast(new RpcDecoder(RpcRequest.class));
+                            pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0,4 ,0, 4));
+                            pipeline.addLast(new MyServerHandler());
                         }
                     });
             ChannelFuture channelFuture = serverBootstrap.bind("localhost", 8899).sync();
