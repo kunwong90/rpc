@@ -1,25 +1,32 @@
 package com.learn.rpc.netty1;
 
+import com.learn.rpc.protocol.RpcRequest;
+import com.learn.rpc.protocol.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Created by wangkun on 2017/5/20.
  */
-public class MyClientHandler extends SimpleChannelInboundHandler<String> {
+public class MyClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) throws Exception {
         System.out.println(ctx.channel().remoteAddress());
         System.out.println("client output : " + msg);
-        ctx.writeAndFlush("from client : " + LocalDateTime.now());
+        RpcRequest rpcRequest = new RpcRequest();
+        rpcRequest.setRequestId(UUID.randomUUID().toString());
+        ctx.writeAndFlush(rpcRequest);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush("来自于客户端的问候");
+        RpcRequest rpcRequest = new RpcRequest();
+        rpcRequest.setRequestId(UUID.randomUUID().toString());
+        ctx.writeAndFlush(rpcRequest);
     }
 
     @Override

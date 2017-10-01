@@ -1,5 +1,9 @@
 package com.learn.rpc.netty1;
 
+import com.learn.rpc.protocol.RpcDecoder;
+import com.learn.rpc.protocol.RpcEncoder;
+import com.learn.rpc.protocol.RpcRequest;
+import com.learn.rpc.protocol.RpcResponse;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -29,10 +33,9 @@ public class MyServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new RpcEncoder(RpcResponse.class));
+                            pipeline.addLast(new RpcDecoder(RpcRequest.class));
                             pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0,4 ,0, 4));
-                            pipeline.addLast(new LengthFieldPrepender(4));
-                            pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
-                            pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
                             pipeline.addLast(new MyServerHandler());
                         }
                     });
