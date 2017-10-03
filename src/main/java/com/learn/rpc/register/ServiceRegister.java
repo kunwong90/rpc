@@ -13,7 +13,6 @@ public class ServiceRegister {
     public ServiceRegister(String zkAddress) {
         // 创建 ZooKeeper 客户端
         zkClient = new ZkClient(zkAddress, ZkConstant.ZK_SESSION_TIMEOUT, ZkConstant.ZK_CONNECTION_TIMEOUT);
-        LOGGER.info("connect zookeeper");
     }
 
     public void register(String serviceName, String serviceAddress) {

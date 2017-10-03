@@ -17,19 +17,23 @@
     <context:component-scan base-package="com.learn.rpc"/>
 
 
+    <context:property-placeholder location="classpath:db.properties, classpath:rpc.properties, classpath:zookeeper.properties"/>
+
+
     <bean id="serviceRegister" class="com.learn.rpc.register.ServiceRegister">
-        <constructor-arg index="0" value="localhost:2181"/>
+        <constructor-arg index="0" value="${zookeerper.server}"/>
     </bean>
 
 
     <bean id="rpcServerInitializer" class="com.learn.rpc.server.RpcServerInitializer">
-        <property name="serviceAddress" value="localhost:8899"/>
+        <property name="host" value="${rpc.server.host}"/>
+        <property name="port" value="${rpc.server.port}"/>
         <property name="serviceRegister" ref="serviceRegister"/>
     </bean>
 
     <bean id="redisDao" class="com.learn.rpc.test.RedisDao">
-        <constructor-arg index="0" name="ip" value="localhost"/>
-        <constructor-arg index="1" name="port" value="6379"/>
+        <constructor-arg index="0" name="ip" value="${redis.server}"/>
+        <constructor-arg index="1" name="port" value="${redis.port}"/>
     </bean>
 
 </beans>

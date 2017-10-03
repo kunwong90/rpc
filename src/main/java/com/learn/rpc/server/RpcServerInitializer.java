@@ -24,6 +24,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import javax.xml.ws.Holder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,13 +32,11 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServerInitializer.class);
 
-    private String serviceAddress;
-
-    public void setServiceAddress(String serviceAddress) {
-        this.serviceAddress = serviceAddress;
-    }
-
     private ServiceRegister serviceRegister;
+
+    private String host;
+
+    private int port;
 
     public void setServiceRegister(ServiceRegister serviceRegister) {
         this.serviceRegister = serviceRegister;
@@ -113,11 +112,9 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
                     });
 
             // 获取 RPC 服务器的 IP 地址与端口号
-            String[] addressArray = StringUtils.split(serviceAddress, ":");
-            String ip = addressArray[0];
-            int port = Integer.parseInt(addressArray[1]);
+            String serviceAddress = host + ":" + port;
             // 启动 RPC 服务器
-            ChannelFuture channelFuture = serverBootstrap.bind(ip, port).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(host, port).sync();
             // 注册 RPC 服务地址
             if (serviceRegister != null) {
                 for (String interfaceName : handlerMap.keySet()) {
@@ -133,5 +130,13 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
             workGroup.shutdownGracefully();
         }
 
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
