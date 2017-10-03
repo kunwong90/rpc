@@ -6,6 +6,8 @@ public class RpcResponse implements Serializable {
 
     private String requestId;
 
+    private Throwable throwable;
+
     private Object result;
 
     public String getRequestId() {
@@ -24,10 +26,19 @@ public class RpcResponse implements Serializable {
         this.result = result;
     }
 
+    public void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
     @Override
     public String toString() {
         return "RpcResponse{" +
                 "requestId='" + requestId + '\'' +
+                ", throwable=" + throwable +
                 ", result=" + result +
                 '}';
     }

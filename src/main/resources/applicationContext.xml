@@ -16,11 +16,20 @@
 
     <context:component-scan base-package="com.learn.rpc"/>
 
-    <util:properties id="rpc" location="classpath:rpc.properties"></util:properties>
 
-    <!--<bean id="rpcServer" class="com.learn.rpc.server.ServerInitializer">
-        <constructor-arg index="0" value="localhost"></constructor-arg>
-        <constructor-arg index="1" value="8899"></constructor-arg>
-    </bean>-->
+    <bean id="serviceRegister" class="com.learn.rpc.register.ServiceRegister">
+        <constructor-arg index="0" value="localhost:2181"/>
+    </bean>
+
+
+    <bean id="rpcServerInitializer" class="com.learn.rpc.server.RpcServerInitializer">
+        <property name="serviceAddress" value="localhost:8899"/>
+        <property name="serviceRegister" ref="serviceRegister"/>
+    </bean>
+
+    <bean id="redisDao" class="com.learn.rpc.test.RedisDao">
+        <constructor-arg index="0" name="ip" value="localhost"/>
+        <constructor-arg index="1" name="port" value="6379"/>
+    </bean>
 
 </beans>

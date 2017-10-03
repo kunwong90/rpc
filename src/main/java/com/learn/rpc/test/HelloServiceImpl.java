@@ -8,12 +8,21 @@
 package com.learn.rpc.test;
 
 import com.learn.rpc.annotation.RpcProvide;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @RpcProvide(HelloService.class)
-@Service
 public class HelloServiceImpl implements HelloService {
+
+    @Autowired
+    private RedisDao redisDao;
+
     public String hello(String name) {
         return "Hello " + name;
+    }
+
+    @Override
+    public User saveAndReturUser(User user) {
+        return redisDao.saveAndGetUser(user);
     }
 }
