@@ -24,8 +24,8 @@ public class ServiceDiscovery {
         ZkClient zkClient = new ZkClient(zkAddress, ZkConstant.ZK_SESSION_TIMEOUT, ZkConstant.ZK_CONNECTION_TIMEOUT);
         LOGGER.debug("connect zookeeper");
         try {
-            // 获取 service 节点
-            String servicePath = ZkConstant.ZK_REGISTRY_PATH + "/" + name;
+            // 获取 service providers 节点
+            String servicePath = ZkConstant.RPC_ZK_ROOT + ZkConstant.ZK_SEPARATOR + name + ZkConstant.RPC_ZK_TYPE_PROVIDERS;
             if (!zkClient.exists(servicePath)) {
                 throw new RuntimeException(String.format("can not find any service node on path: %s", servicePath));
             }
@@ -46,8 +46,9 @@ public class ServiceDiscovery {
                 LOGGER.debug("get random address node: {}", address);
             }
             // 获取 address 节点的值
-            String addressPath = servicePath + "/" + address;
-            return zkClient.readData(addressPath);
+            //String addressPath = servicePath + "/" + address;
+            //return zkClient.readData(addressPath);
+            return address;
         } finally {
             zkClient.close();
         }

@@ -5,6 +5,9 @@ import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class ServiceRegister {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRegister.class);
@@ -17,7 +20,7 @@ public class ServiceRegister {
 
     public void register(String serviceName, String serviceAddress) {
         // 创建 registry 节点（持久）
-        String registryPath = ZkConstant.ZK_REGISTRY_PATH;
+        String registryPath = ZkConstant.RPC_ZK_ROOT;
         if (!zkClient.exists(registryPath)) {
             zkClient.createPersistent(registryPath);
             LOGGER.info("create registry node: {}", registryPath);
@@ -28,9 +31,28 @@ public class ServiceRegister {
             zkClient.createPersistent(servicePath);
             LOGGER.info("create service node: {}", servicePath);
         }
+
+        // 创建providers路径
+        String providersPath = servicePath + ZkConstant.RPC_ZK_TYPE_PROVIDERS;
+        if (!zkClient.exists(providersPath)) {
+            zkClient.createPersistent(providersPath);
+            LOGGER.info("create providers node : {}", providersPath);
+        }
+        // 获取当前机器的ip地址
+        try {
+            String localIp = InetAddress.getLocalHost().getHostAddress();
+            String ipAddressPath = providersPath + ZkConstant.ZK_SEPARATOR + serviceAddress;
+            if (!zkClient.exists(ipAddressPath)) {
+                zkClient.createEphemeral(ipAddressPath);
+            }
+        } catch (UnknownHostException e) {
+            LOGGER.error("get local host ip error.", e);
+        } catch (Exception e) {
+            LOGGER.error("create node exception.", e);
+        }
         // 创建 address 节点（临时）
-        String addressPath = servicePath + "/address-";
+        /*String addressPath = servicePath + "/address-";
         String addressNode = zkClient.createEphemeralSequential(addressPath, serviceAddress);
-        LOGGER.info("create address node: {}", addressNode);
+        LOGGER.info("create address node: {}", addressNode);*/
     }
 }
