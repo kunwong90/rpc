@@ -7,15 +7,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class RoundRobinLoadBalance extends AbstractLoadBalance {
 
-    public RoundRobinLoadBalance(List<String> hosts) {
-        super(hosts);
-    }
-
     private AtomicInteger idx = new AtomicInteger(0);
 
     @Override
-    public String doSelect() {
-        List<String> hosts = getHosts();
+    public String doSelect(List<String> hosts) {
         int index = getNextIndex();
         int count = hosts.size();
         return hosts.get(index % count);

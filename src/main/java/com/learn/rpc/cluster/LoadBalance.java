@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface LoadBalance {
 
-    String select();
+    String select(List<String> hosts);
 }

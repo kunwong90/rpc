@@ -1,7 +1,6 @@
 package com.learn.rpc.register;
 
 import com.learn.rpc.cluster.LoadBalance;
-import com.learn.rpc.cluster.RandomLoadBalance;
 import com.learn.rpc.constant.ZkConstant;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -16,8 +15,11 @@ public class ServiceDiscovery {
 
     private String zkAddress;
 
-    public ServiceDiscovery(String zkAddress) {
+    private LoadBalance loadBalance;
+
+    public ServiceDiscovery(String zkAddress, LoadBalance loadBalance) {
         this.zkAddress = zkAddress;
+        this.loadBalance = loadBalance;
     }
 
     public String discover(String name) {
@@ -34,8 +36,7 @@ public class ServiceDiscovery {
             if (CollectionUtils.isEmpty(addressList)) {
                 throw new RuntimeException(String.format("can not find any address node on path: %s", servicePath));
             }
-            LoadBalance balance = new RandomLoadBalance(addressList);
-            return balance.select();
+            return loadBalance.select(addressList);
         } finally {
             zkClient.close();
         }

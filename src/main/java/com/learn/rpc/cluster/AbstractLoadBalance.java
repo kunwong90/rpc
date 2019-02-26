@@ -6,28 +6,16 @@ import java.util.List;
 
 public abstract class AbstractLoadBalance implements LoadBalance {
 
-
-    private List<String> hosts;
-
-    public AbstractLoadBalance(List<String> hosts) {
+    @Override
+    public String select(List<String> hosts) {
         if (CollectionUtils.isEmpty(hosts)) {
             throw new RuntimeException("服务提供者不能为空!");
         }
-        this.hosts = hosts;
-    }
-
-
-    @Override
-    public String select() {
         if (hosts.size() == 1) {
             return hosts.get(0);
         }
-        return doSelect();
+        return doSelect(hosts);
     }
 
-    protected List<String> getHosts() {
-        return hosts;
-    }
-
-    public abstract String doSelect();
+    public abstract String doSelect(List<String> hosts);
 }
