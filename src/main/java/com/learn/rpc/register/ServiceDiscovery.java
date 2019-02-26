@@ -1,5 +1,7 @@
 package com.learn.rpc.register;
 
+import com.learn.rpc.cluster.LoadBalance;
+import com.learn.rpc.cluster.RandomLoadBalance;
 import com.learn.rpc.constant.ZkConstant;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -7,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class ServiceDiscovery {
 
@@ -33,22 +34,8 @@ public class ServiceDiscovery {
             if (CollectionUtils.isEmpty(addressList)) {
                 throw new RuntimeException(String.format("can not find any address node on path: %s", servicePath));
             }
-            // 获取 address 节点
-            String address;
-            int size = addressList.size();
-            if (size == 1) {
-                // 若只有一个地址，则获取该地址
-                address = addressList.get(0);
-                LOGGER.debug("get only address node: {}", address);
-            } else {
-                // 若存在多个地址，则随机获取一个地址
-                address = addressList.get(ThreadLocalRandom.current().nextInt(size));
-                LOGGER.debug("get random address node: {}", address);
-            }
-            // 获取 address 节点的值
-            //String addressPath = servicePath + "/" + address;
-            //return zkClient.readData(addressPath);
-            return address;
+            LoadBalance balance = new RandomLoadBalance(addressList);
+            return balance.select();
         } finally {
             zkClient.close();
         }
