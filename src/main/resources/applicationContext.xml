@@ -31,9 +31,4 @@
         <property name="serviceRegister" ref="serviceRegister"/>
     </bean>
 
-    <bean id="redisDao" class="com.learn.rpc.test.RedisDao">
-        <constructor-arg index="0" name="ip" value="${redis.server}"/>
-        <constructor-arg index="1" name="port" value="${redis.port}"/>
-    </bean>
-
 </beans>
