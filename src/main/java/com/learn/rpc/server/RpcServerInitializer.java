@@ -24,7 +24,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.xml.ws.Holder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,24 +47,18 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
      */
     private volatile Map<String, Object> handlerMap = new ConcurrentHashMap<>();
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, Object> beanMap = applicationContext.getBeansWithAnnotation(RpcProvide.class);
-        System.err.println("beanMap = " + beanMap);
         if (MapUtils.isNotEmpty(beanMap)) {
             for (Map.Entry<String, Object> entry : beanMap.entrySet()) {
-                System.out.println("beanName = " + entry.getKey());
                 Object bean = entry.getValue();
-                System.out.println("object = " + bean);
+                LOGGER.info("beanName = {}, object = {}", entry.getKey(), bean);
                 Class clazz = bean.getClass().getAnnotation(RpcProvide.class).value();
-
-
-                System.out.println("clazz = " + clazz);
-                System.out.println("interfaceName = " + clazz.getName());
+                LOGGER.info("clazz = {}, interfaceName = {}", clazz, clazz.getName());
 
                 String implCode = bean.getClass().getAnnotation(RpcProvide.class).implCode();
                 LOGGER.info("implCode = {}", implCode);
-
-
 
                 Class<?>[] clazzs = bean.getClass().getInterfaces();
                 //该实现类的注解和接口是否为同一个接口
@@ -94,6 +87,7 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
 
     }
 
+    @Override
     public void afterPropertiesSet() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();

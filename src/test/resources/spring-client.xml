@@ -26,6 +26,6 @@
 
     <bean id="rpcProxy" class="com.learn.rpc.client.RpcProxy">
         <constructor-arg index="0" ref="serviceDiscovery"></constructor-arg>
-    </bean>
+        </bean>
 
 </beans>
