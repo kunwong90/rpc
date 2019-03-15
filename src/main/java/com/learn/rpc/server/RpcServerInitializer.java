@@ -17,6 +17,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,6 +34,7 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServerInitializer.class);
 
+    @Resource
     private ServiceRegister serviceRegister;
 
     private int port;
@@ -62,7 +65,7 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
                 Class<?>[] clazzs = bean.getClass().getInterfaces();
                 //该实现类的注解和接口是否为同一个接口
                 boolean sameClazz = false;
-                if (clazzs != null && clazzs.length > 0) {
+                if (ArrayUtils.isNotEmpty(clazzs)) {
                     for (Class cls : clazzs) {
                         if (cls.equals(clazz)) {
                             sameClazz = true;

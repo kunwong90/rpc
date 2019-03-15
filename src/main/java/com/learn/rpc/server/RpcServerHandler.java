@@ -5,15 +5,16 @@ import com.learn.rpc.protocol.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServerHandler.class);
 
     private volatile Map<String, Object> beanMap;
 
@@ -23,9 +24,8 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
-        System.out.println("客户端请供求信息:" + ctx.channel().remoteAddress() + ", " + request);
+        LOGGER.info("client request info : {}", ctx.channel().remoteAddress() + ", " + request);
         String interfaceName = request.getInterfaceName();
-        Class interfaceClass = Class.forName(interfaceName);
         Object bean = beanMap.get(interfaceName);
         Class[] parameterTypes = request.getParameterTypes();
         Object[] parameters = request.getParameters();
