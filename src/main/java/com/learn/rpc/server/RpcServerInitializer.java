@@ -6,6 +6,7 @@ import com.learn.rpc.protocol.RpcEncoder;
 import com.learn.rpc.protocol.RpcRequest;
 import com.learn.rpc.protocol.RpcResponse;
 import com.learn.rpc.register.ServiceRegister;
+import com.learn.rpc.util.IpAddressUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -32,8 +33,6 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServerInitializer.class);
 
     private ServiceRegister serviceRegister;
-
-    private String host;
 
     private int port;
 
@@ -106,9 +105,10 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
                     });
 
             // 获取 RPC 服务器的 IP 地址与端口号
-            String serviceAddress = host + ":" + port;
+            String localHostIp = IpAddressUtil.getLocalHostIpAddress();
+            String serviceAddress = localHostIp + ":" + port;
             // 启动 RPC 服务器
-            ChannelFuture channelFuture = serverBootstrap.bind(host, port).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(localHostIp, port).sync();
             // 注册 RPC 服务地址
             if (serviceRegister != null) {
                 for (String interfaceName : handlerMap.keySet()) {
@@ -125,11 +125,6 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
         }
 
     }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
     public void setPort(int port) {
         this.port = port;
     }
