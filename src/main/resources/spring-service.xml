@@ -15,15 +15,19 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:component-scan base-package="com.learn.rpc"/>
 
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <context:component-scan base-package="com.learn.rpc">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
 
     <context:property-placeholder location="classpath:db.properties, classpath:rpc.properties, classpath:zookeeper.properties"/>
 
 
     <bean id="rpcServerInitializer" class="com.learn.rpc.server.RpcServerInitializer">
         <property name="port" value="${rpc.server.port}"/>
-        <property name="serviceRegister" ref="serviceRegister"/>
     </bean>
 
 </beans>

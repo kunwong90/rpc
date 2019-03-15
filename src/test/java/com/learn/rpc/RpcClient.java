@@ -1,3 +1,5 @@
+package com.learn.rpc;
+
 import com.learn.rpc.client.RpcProxy;
 import com.learn.rpc.test.HelloService;
 import com.learn.rpc.test.User;
@@ -11,9 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.UUID;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-client.xml")
-public class RpcClient {
+
+public class RpcClient extends BaseTest {
 
     private final Logger logger = LoggerFactory.getLogger(RpcClient.class);
 

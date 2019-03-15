@@ -26,24 +26,19 @@ public class ServiceRegister {
         // 创建 service 节点（持久）
         String servicePath = registryPath + ZkConstant.ZK_SEPARATOR + serviceName;
         if (!curatorZookeeperClient.checkExists(servicePath)) {
-            curatorZookeeperClient.createEphemeral(servicePath);
+            curatorZookeeperClient.createPersistent(servicePath);
             LOGGER.info("create service node: {}", servicePath);
         }
 
         // 创建providers路径
         String providersPath = servicePath + ZkConstant.RPC_ZK_TYPE_PROVIDERS;
         if (!curatorZookeeperClient.checkExists(providersPath)) {
-            curatorZookeeperClient.createEphemeral(providersPath);
+            curatorZookeeperClient.createPersistent(providersPath);
             LOGGER.info("create providers node : {}", providersPath);
         }
-        // 获取当前机器的ip地址
-        try {
-            String ipAddressPath = providersPath + ZkConstant.ZK_SEPARATOR + serviceAddress;
-            if (!curatorZookeeperClient.checkExists(ipAddressPath)) {
-                curatorZookeeperClient.createEphemeral(ipAddressPath);
-            }
-        } catch (Exception e) {
-            LOGGER.error("create node exception.", e);
+        String ipAddressPath = providersPath + ZkConstant.ZK_SEPARATOR + serviceAddress;
+        if (!curatorZookeeperClient.checkExists(ipAddressPath)) {
+            curatorZookeeperClient.createEphemeral(ipAddressPath);
         }
     }
 }
