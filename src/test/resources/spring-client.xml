@@ -14,18 +14,17 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-    <context:component-scan base-package="com.learn.rpc.server"/>
+    <context:component-scan base-package="com.learn.rpc"/>
 
     <bean id="serviceDiscovery" class="com.learn.rpc.register.ServiceDiscovery">
-        <constructor-arg index="0" name="zkAddress" value="localhost:2181"/>
-        <constructor-arg index="1" name="loadBalance" ref="roundRobinLoadBalance"/>
+        <constructor-arg index="0" name="loadBalance" ref="roundRobinLoadBalance"/>
     </bean>
 
     <bean id="roundRobinLoadBalance" class="com.learn.rpc.cluster.RoundRobinLoadBalance"/>
 
 
     <bean id="rpcProxy" class="com.learn.rpc.client.RpcProxy">
-        <constructor-arg index="0" ref="serviceDiscovery"></constructor-arg>
-        </bean>
+        <constructor-arg index="0" ref="serviceDiscovery"/>
+    </bean>
 
 </beans>

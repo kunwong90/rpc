@@ -21,11 +21,6 @@
     <context:property-placeholder location="classpath:db.properties, classpath:rpc.properties, classpath:zookeeper.properties"/>
 
 
-    <bean id="serviceRegister" class="com.learn.rpc.register.ServiceRegister">
-        <constructor-arg index="0" value="${zookeerper.server}"/>
-    </bean>
-
-
     <bean id="rpcServerInitializer" class="com.learn.rpc.server.RpcServerInitializer">
         <property name="port" value="${rpc.server.port}"/>
         <property name="serviceRegister" ref="serviceRegister"/>
