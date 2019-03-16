@@ -1,0 +1,47 @@
+<xsd:schema
+        xmlns="http://hulk.com/schema"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+
+    xmlns:tool="http://www.springframework.org/schema/tool"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+        targetNamespace="http://hulk.com/schema">
+
+
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool"/>
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+
+
+    <xsd:complexType name="abstractConfig">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="beans:property" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:choice>
+        <xsd:anyAttribute namespace="##other" processContents="lax"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="consumerComplexType">
+        <xsd:complexContent>
+            <xsd:extension base="abstractConfig">
+                <xsd:attribute name="id" type="xsd:string" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[ id. ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="interface" type="xsd:string" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[ 接口全类名. ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="consumer" type="consumerComplexType">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[ consumer的文档 ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+</xsd:schema>

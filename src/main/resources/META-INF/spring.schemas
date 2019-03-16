@@ -1,0 +1,2 @@
+#http\://hulk.com/schema要与rpc.xsd 中的targetNamespace名称一致
+http\://hulk.com/schema/rpc.xsd=META-INF/rpc.xsd

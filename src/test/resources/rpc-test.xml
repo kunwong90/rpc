@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rpc="http://hulk.com/schema"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jee="http://www.springframework.org/schema/jee"
@@ -12,19 +13,12 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://hulk.com/schema http://hulk.com/schema/rpc.xsd">
 
-    <context:component-scan base-package="com.learn.rpc"/>
-
-    <bean id="serviceDiscovery" class="com.learn.rpc.register.ServiceDiscovery">
-        <constructor-arg index="0" name="loadBalance" ref="roundRobinLoadBalance"/>
-    </bean>
-
-    <bean id="roundRobinLoadBalance" class="com.learn.rpc.cluster.RoundRobinLoadBalance"/>
+    <rpc:consumer id="hiService" interface="com.learn.rpc.test.HiService"/>
 
 
-    <bean id="rpcProxy" class="com.learn.rpc.client.RpcProxy">
-        <constructor-arg index="0" ref="serviceDiscovery"/>
-    </bean>
+    <rpc:consumer id="helloService" interface="com.learn.rpc.test.HelloService"/>
 
 </beans>
