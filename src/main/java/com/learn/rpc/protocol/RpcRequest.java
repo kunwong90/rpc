@@ -6,13 +6,29 @@ import java.util.Arrays;
 public class RpcRequest implements Serializable {
 
     private String requestId;
-    //接口名
+    /**
+     * 接口名
+     */
     private String interfaceName;
-    //请求的方法名
+
+    /**
+     * 请求服务版本号
+     */
+    private String version;
+
+    /**
+     * 请求的方法名
+     */
     private String methodName;
-    //参数类型
+
+    /**
+     * 参数类型
+     */
     private Class<?>[] parameterTypes;
-    //参数值
+
+    /**
+     * 参数值
+     */
     private Object[] parameters;
 
     public String getRequestId() {
@@ -29,6 +45,14 @@ public class RpcRequest implements Serializable {
 
     public void setInterfaceName(String interfaceName) {
         this.interfaceName = interfaceName;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public String getMethodName() {
@@ -60,6 +84,7 @@ public class RpcRequest implements Serializable {
         return "RpcRequest{" +
                 "requestId='" + requestId + '\'' +
                 ", interfaceName='" + interfaceName + '\'' +
+                ", version='" + version + '\'' +
                 ", methodName='" + methodName + '\'' +
                 ", parameterTypes=" + Arrays.toString(parameterTypes) +
                 ", parameters=" + Arrays.toString(parameters) +
