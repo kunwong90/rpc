@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
 
+@Deprecated
 public class RpcProxy {
 
     private final Logger logger = LoggerFactory.getLogger(RpcProxy.class);

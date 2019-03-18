@@ -14,7 +14,15 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Reference {
 
+    /**
+     * 服务版本号
+     * @return
+     */
+    String version() default "";
+
+    //可能存在多个实现，用于获取某个具体实现
+    String implCode() default "";
 }
