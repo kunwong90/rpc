@@ -69,9 +69,11 @@ public class ReferenceAnnotationBeanPostProcessor implements BeanPostProcessor {
                 }
                 Reference reference = field.getAnnotation(Reference.class);
                 if (reference != null) {
-                    Object value = refer(reference, field.getType());
-                    if (value != null) {
-                        field.set(bean, value);
+                    if (!Modifier.isStatic(field.getModifiers())) {
+                        Object value = refer(reference, field.getType());
+                        if (value != null) {
+                            field.set(bean, value);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -266,7 +268,7 @@ public class ReferenceAnnotationBeanPostProcessor implements BeanPostProcessor {
         String implCode = reference.implCode();
         return (T) Proxy.newProxyInstance(
                 referenceClass.getClassLoader(),
-                new Class<?>[]{referenceClass},(Object proxy, Method method, Object[] args) -> {
+                new Class<?>[]{referenceClass}, (Object proxy, Method method, Object[] args) -> {
                     // 创建 RPC 请求对象并设置请求属性
                     RpcRequest request = new RpcRequest();
                     request.setRequestId(UUID.randomUUID().toString());
