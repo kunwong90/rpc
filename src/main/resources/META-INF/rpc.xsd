@@ -1,13 +1,9 @@
 <xsd:schema
         xmlns="http://hulk.com/schema"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-
-
         xmlns:tool="http://www.springframework.org/schema/tool"
         xmlns:beans="http://www.springframework.org/schema/beans"
         targetNamespace="http://hulk.com/schema">
-
-
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:import namespace="http://www.springframework.org/schema/tool"/>
     <xsd:import namespace="http://www.springframework.org/schema/beans"/>
@@ -160,6 +156,12 @@
                 <xsd:documentation><![CDATA[ The request timeout. ]]></xsd:documentation>
             </xsd:annotation>
         </xsd:attribute>
+
+        <xsd:attribute name="connectionTimeout" type="xsd:int">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The request timeout. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
         <xsd:attribute name="session" type="xsd:string">
             <xsd:annotation>
                 <xsd:documentation><![CDATA[ The session timeout. ]]></xsd:documentation>
@@ -204,7 +206,7 @@
             <xsd:documentation><![CDATA[ The registry config ]]></xsd:documentation>
             <xsd:appinfo>
                 <tool:annotation>
-                    <tool:exports type="org.apache.dubbo.config.RegistryConfig"/>
+                    <tool:exports type="com.learn.rpc.config.RegistryConfig"/>
                 </tool:annotation>
             </xsd:appinfo>
         </xsd:annotation>

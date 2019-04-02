@@ -116,6 +116,11 @@ public class RegistryConfig implements Serializable {
      */
     private String extraKeys;
 
+    /**
+     *
+     */
+    private Integer connectionTimeout;
+
 
     public String getAddress() {
         return address;
@@ -301,6 +306,14 @@ public class RegistryConfig implements Serializable {
         this.extraKeys = extraKeys;
     }
 
+    public Integer getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    public void setConnectionTimeout(Integer connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
     @Override
     public String toString() {
         return "RegistryConfig{" +
@@ -327,6 +340,7 @@ public class RegistryConfig implements Serializable {
                 ", isDefault=" + isDefault +
                 ", simplified=" + simplified +
                 ", extraKeys='" + extraKeys + '\'' +
+                ", connectionTimeout=" + connectionTimeout +
                 '}';
     }
 }

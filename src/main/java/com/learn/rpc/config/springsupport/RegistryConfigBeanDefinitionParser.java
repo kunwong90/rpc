@@ -21,6 +21,7 @@ public class RegistryConfigBeanDefinitionParser implements BeanDefinitionParser 
         beanDefinition.setBeanClass(beanClass);
         beanDefinition.setLazyInit(false);
         beanDefinition.getPropertyValues().add("address", element.getAttribute("address"));
+        beanDefinition.getPropertyValues().add("connectionTimeout", element.getAttribute("connectionTimeout"));
         BeanDefinitionRegistry beanDefinitionRegistry = parserContext.getRegistry();
         beanDefinitionRegistry.registerBeanDefinition(beanClass.getName(), beanDefinition);
         return beanDefinition;

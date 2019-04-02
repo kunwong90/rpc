@@ -14,6 +14,6 @@ public class RpcTest {
         System.out.println(consumerConfigBean.getFullInterface());
 
         RegistryConfig registryConfig = ac.getBean(RegistryConfig.class);
-        System.out.println(registryConfig.getAddress());
+        System.out.println(registryConfig);
     }
 }

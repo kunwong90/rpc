@@ -21,6 +21,6 @@
 
     <rpc:consumer id="helloService" interface="com.learn.rpc.test.HelloService"/>
 
-    <rpc:registry address="localhost:2181"/>
+    <rpc:registry address="localhost:2181" connectionTimeout="5000"/>
 
 </beans>
