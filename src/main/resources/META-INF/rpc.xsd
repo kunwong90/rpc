@@ -3,16 +3,14 @@
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 
 
-    xmlns:tool="http://www.springframework.org/schema/tool"
-    xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:tool="http://www.springframework.org/schema/tool"
+        xmlns:beans="http://www.springframework.org/schema/beans"
         targetNamespace="http://hulk.com/schema">
-
 
 
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:import namespace="http://www.springframework.org/schema/tool"/>
     <xsd:import namespace="http://www.springframework.org/schema/beans"/>
-
 
 
     <xsd:complexType name="abstractConfig">
@@ -57,6 +55,158 @@
     <xsd:element name="annotation" type="annotationType">
         <xsd:annotation>
             <xsd:documentation><![CDATA[ The annotation config ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:complexType name="parameterType">
+        <xsd:attribute name="key" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The parameter key. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="value" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The parameter value. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="hide" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ Hide parameter. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:element name="parameter" type="parameterType">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[ The service url parameter ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:complexType name="registryType">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:ID">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The unique identifier for a bean. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="address" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry address. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="port" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry default port. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="protocol" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry lookup protocol. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="username" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry username. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="password" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry password. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="transport" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The protocol transporter type. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="transporter" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The protocol transporter type. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="server" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The protocol server type. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="client" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The protocol client type. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="cluster" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry cluster type. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="forks" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ ForkingCluster forks. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="group" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry group. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="version" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry version. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="timeout" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The request timeout. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="session" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The session timeout. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="file" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The registry adddress file store. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="wait" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The wait time for shutdown. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="check" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ Check registry status on stratup. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="dynamic" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    <![CDATA[ the service registered to this registry is dynamic(true) or static(false). ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="register" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    <![CDATA[ register service to this registry(true) or not(false). ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="simplified" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ Is simple. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:element name="registry" type="registryType">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[ The registry config ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.apache.dubbo.config.RegistryConfig"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
     </xsd:element>
 </xsd:schema>

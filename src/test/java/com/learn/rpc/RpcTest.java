@@ -1,5 +1,6 @@
 package com.learn.rpc;
 
+import com.learn.rpc.config.RegistryConfig;
 import com.learn.rpc.config.springsupport.ConsumerConfigBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,5 +12,8 @@ public class RpcTest {
         ConsumerConfigBean consumerConfigBean = ac.getBean(ConsumerConfigBean.class);
         System.out.println(consumerConfigBean.getId());
         System.out.println(consumerConfigBean.getFullInterface());
+
+        RegistryConfig registryConfig = ac.getBean(RegistryConfig.class);
+        System.out.println(registryConfig.getAddress());
     }
 }
