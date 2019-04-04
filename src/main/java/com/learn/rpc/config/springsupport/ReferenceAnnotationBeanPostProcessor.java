@@ -2,8 +2,11 @@ package com.learn.rpc.config.springsupport;
 
 import com.learn.rpc.annotation.Reference;
 import com.learn.rpc.client.RpcClientHandler;
+import com.learn.rpc.core.extension.ExtensionLoader;
 import com.learn.rpc.protocol.RpcRequest;
 import com.learn.rpc.protocol.RpcResponse;
+import com.learn.rpc.proxy.ProxyFactory;
+import com.learn.rpc.proxy.spi.JdkProxyFactory;
 import com.learn.rpc.register.ServiceDiscovery;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -113,45 +116,8 @@ public class ReferenceAnnotationBeanPostProcessor implements BeanPostProcessor {
                     + referenceClass.getName() + " is not a interface.");
         }
         String implCode = reference.implCode();
-        return (T) Proxy.newProxyInstance(
-                referenceClass.getClassLoader(),
-                new Class<?>[]{referenceClass}, (Object proxy, Method method, Object[] args) -> {
-                    // 创建 RPC 请求对象并设置请求属性
-                    RpcRequest request = new RpcRequest();
-                    request.setRequestId(UUID.randomUUID().toString());
-                    request.setInterfaceName(method.getDeclaringClass().getName());
-                    request.setMethodName(method.getName());
-                    request.setParameterTypes(method.getParameterTypes());
-                    request.setParameters(args);
-                    String serviceAddress = null;
-                    // 获取 RPC 服务地址
-                    if (serviceDiscovery != null) {
-                        String serviceName = referenceClass.getName();
-                        if (StringUtils.isNotBlank(implCode)) {
-                            serviceName = serviceName + "#" + implCode;
-                        }
-                        serviceAddress = serviceDiscovery.discover(serviceName);
-                        LOGGER.info("discover service: {} => {}", serviceName, serviceAddress);
-                    }
-                    if (StringUtils.isEmpty(serviceAddress)) {
-                        throw new RuntimeException("server address is empty");
-                    }
-                    // 从 RPC 服务地址中解析主机名与端口号
-                    String[] array = StringUtils.split(serviceAddress, ":");
-                    String host = array[0];
-                    int port = Integer.parseInt(array[1]);
-                    // 创建 RPC 客户端对象并发送 RPC 请求
-                    RpcClientHandler rpcClientHandler = new RpcClientHandler(host, port);
-                    long time = System.currentTimeMillis();
-                    RpcResponse response = rpcClientHandler.sendRequest(request);
-                    LOGGER.info("cost time: {} ms", System.currentTimeMillis() - time);
-                    if (response == null) {
-                        throw new RuntimeException("response is null");
-                    }
-                    // 返回 RPC 响应结果
-                    return response.getResult();
-                }
-        );
+        ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getExtension("jdk");
+        return proxyFactory.getProxy(referenceClass);
     }
 
     public ServiceDiscovery getServiceDiscovery() {

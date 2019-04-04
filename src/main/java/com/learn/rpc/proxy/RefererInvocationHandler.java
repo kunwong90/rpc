@@ -18,14 +18,14 @@ public class RefererInvocationHandler<T> extends AbstractRefererHandler<T> imple
 
     public RefererInvocationHandler(Class<T> clz) {
         this.clz = clz;
-        interfaceName = clz.getName();
+        this.interfaceName = clz.getName();
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (isLocalMethod(method)) {
             if ("toString".equals(method.getName())) {
-                return "";
+                return "toString";
             }
             if ("equals".equals(method.getName())) {
                 return true;
@@ -37,12 +37,11 @@ public class RefererInvocationHandler<T> extends AbstractRefererHandler<T> imple
         request.setRequestId(RequestIdGenerator.getRequestId());
         request.setArguments(args);
         String methodName = method.getName();
-        boolean async = false;
         request.setMethodName(methodName);
         request.setParamtersDesc(ReflectUtil.getMethodParamDesc(method));
         request.setInterfaceName(interfaceName);
-
-        return invokeRequest(request, getRealReturnType(async, this.clz, method, methodName), async);
+        request.setParameterTypes(method.getParameterTypes());
+        return invokeRequest(request, method.getReturnType());
     }
 
     /**
@@ -62,20 +61,4 @@ public class RefererInvocationHandler<T> extends AbstractRefererHandler<T> imple
         }
         return false;
     }
-
-
-    private Class<?> getRealReturnType(boolean asyncCall, Class<?> clazz, Method method, String methodName) {
-        if (asyncCall) {
-            try {
-                Method m = clazz.getMethod(methodName, method.getParameterTypes());
-                return m.getReturnType();
-            } catch (Exception e) {
-                LOGGER.warn("RefererInvocationHandler get real return type fail. err:" + e.getMessage());
-                return method.getReturnType();
-            }
-        } else {
-            return method.getReturnType();
-        }
-    }
-
 }

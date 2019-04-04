@@ -13,14 +13,14 @@ public class RefererCommonHandler<T> extends AbstractRefererHandler<T> implement
         this.interfaceName = interfaceName;
     }
 
-    public Object call(String methodName, Object[] arguments, Class returnType, Map<String, String> attachments, boolean async) throws Throwable {
+    public Object call(String methodName, Object[] arguments, Class returnType, Map<String, String> attachments) throws Throwable {
         DefaultRequest request = new DefaultRequest();
         request.setRequestId(RequestIdGenerator.getRequestId());
         request.setInterfaceName(interfaceName);
         request.setMethodName(methodName);
         request.setArguments(arguments);
         request.setAttachments(attachments);
-        return invokeRequest(request, returnType, async);
+        return invokeRequest(request, returnType);
     }
 
     @Override
