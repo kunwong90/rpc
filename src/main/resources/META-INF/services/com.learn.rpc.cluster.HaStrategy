@@ -1,0 +1,2 @@
+com.learn.rpc.cluster.ha.FailoverHaStrategy
+com.learn.rpc.cluster.ha.FailfastHaStrategy

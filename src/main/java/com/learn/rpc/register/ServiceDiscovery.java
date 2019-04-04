@@ -35,6 +35,7 @@ public class ServiceDiscovery {
         if (CollectionUtils.isEmpty(addressList)) {
             throw new RuntimeException(String.format("can not find any address node on path: %s", servicePath));
         }
-        return loadBalance.select(addressList);
+        //return loadBalance.select(addressList);
+        return null;
     }
 }

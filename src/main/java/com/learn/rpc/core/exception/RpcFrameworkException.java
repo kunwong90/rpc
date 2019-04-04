@@ -6,7 +6,7 @@ package com.learn.rpc.core.exception;
  *
  * 
  */
-public class RpcFrameworkException extends RuntimeException {
+public class RpcFrameworkException extends RpcAbstractException {
 
     public RpcFrameworkException(String message) {
         super(message);
@@ -14,5 +14,9 @@ public class RpcFrameworkException extends RuntimeException {
 
     public RpcFrameworkException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public RpcFrameworkException(String message, RpcErrorMsg rpcErrorMsg) {
+        super(message, rpcErrorMsg);
     }
 }
