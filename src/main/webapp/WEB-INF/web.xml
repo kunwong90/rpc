@@ -9,6 +9,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:/spring-service.xml
+            classpath:/rpc.xml
         </param-value>
     </context-param>
 

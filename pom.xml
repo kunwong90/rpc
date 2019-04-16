@@ -9,7 +9,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <jackson.version>2.9.7</jackson.version>
-        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.version>5.1.6.RELEASE</spring.version>
         <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.25</slf4j.version>
@@ -111,31 +111,13 @@
             <version>1.0.8</version>
         </dependency>
 
-        <!-- ZooKeeper -->
-        <!--<dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.8</version>
-        </dependency>-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.101tec/zkclient -->
-        <!--<dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>0.10</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
@@ -152,7 +134,6 @@
             </exclusions>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
@@ -165,10 +146,6 @@
             </exclusions>
         </dependency>
 
-
-
-
-        <!-- Apache Commons Collections -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>

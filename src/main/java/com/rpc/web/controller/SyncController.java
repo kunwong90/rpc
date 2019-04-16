@@ -7,7 +7,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SyncController {
 
-    public SyncController() {
-        System.err.println("-----------------------------");
-    }
 }

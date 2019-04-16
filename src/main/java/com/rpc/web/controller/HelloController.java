@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HelloController {
 
-    public HelloController() {
-        System.err.println("=========================");
-    }
-
     @RequestMapping(value = "/index")
     public String index() {
         return "index";
