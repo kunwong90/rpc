@@ -20,4 +20,16 @@ public @interface Reference {
 
     //可能存在多个实现，用于获取某个具体实现
     String implCode() default "";
+
+    /**
+     * 是否幂等,默认false非幂等
+     * @return
+     */
+    boolean idempotent() default false;
+
+    /**
+     * 重试次数,默认0,如果配置了非幂等,该参数失效
+     * @return
+     */
+    int retryTimes() default 0;
 }
