@@ -16,6 +16,7 @@ public class DefaultRequest extends AbstractTraceableRequest implements Serializ
     private String methodName;
     private String paramtersDesc;
     private Object[] arguments;
+    private Class<?>[] parameterTypes;
     private Map<String, String> attachments;
     private int retries = 0;
     private long requestId;
@@ -110,5 +111,11 @@ public class DefaultRequest extends AbstractTraceableRequest implements Serializ
         this.rpcProtocolVersion = rpcProtocolVersion;
     }
 
+    public Class<?>[] getParameterTypes() {
+        return parameterTypes;
+    }
 
+    public void setParameterTypes(Class<?>[] parameterTypes) {
+        this.parameterTypes = parameterTypes;
+    }
 }

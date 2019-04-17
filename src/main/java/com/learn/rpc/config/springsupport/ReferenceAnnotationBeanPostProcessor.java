@@ -1,14 +1,9 @@
 package com.learn.rpc.config.springsupport;
 
 import com.learn.rpc.annotation.Reference;
-import com.learn.rpc.client.RpcClientHandler;
 import com.learn.rpc.core.extension.ExtensionLoader;
-import com.learn.rpc.protocol.RpcRequest;
-import com.learn.rpc.protocol.RpcResponse;
 import com.learn.rpc.proxy.ProxyFactory;
-import com.learn.rpc.proxy.spi.JdkProxyFactory;
 import com.learn.rpc.register.ServiceDiscovery;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
@@ -19,8 +14,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import java.util.UUID;
 
 public class ReferenceAnnotationBeanPostProcessor implements BeanPostProcessor {
 
@@ -117,7 +110,7 @@ public class ReferenceAnnotationBeanPostProcessor implements BeanPostProcessor {
         }
         String implCode = reference.implCode();
         ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getExtension("jdk");
-        return proxyFactory.getProxy(referenceClass);
+        return proxyFactory.getProxy(referenceClass, serviceDiscovery, implCode);
     }
 
     public ServiceDiscovery getServiceDiscovery() {

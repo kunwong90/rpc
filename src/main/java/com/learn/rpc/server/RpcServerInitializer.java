@@ -28,7 +28,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import javax.annotation.Resource;
-import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -95,42 +94,45 @@ public class RpcServerInitializer implements ApplicationContextAware, Initializi
     public void afterPropertiesSet() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class).
-                    childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel channel) throws Exception {
-                            ChannelPipeline pipeline = channel.pipeline();
-                            pipeline.addLast(new RpcEncoder(RpcResponse.class));
-                            pipeline.addLast(new RpcDecoder(RpcRequest.class));
-                            pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
-                            pipeline.addLast(new RpcServerHandler(handlerMap));
-                        }
-                    });
-            serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
-            serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-            // 获取 RPC 服务器的 IP 地址与端口号
-            String localHostIp = IpAddressUtil.getLocalHostIpAddress();
-            String serviceAddress = localHostIp + ":" + port;
-            // 启动 RPC 服务器
-            //ChannelFuture channelFuture = serverBootstrap.bind(localHostIp, port).sync();
-            ChannelFuture channelFuture = serverBootstrap.bind(localHostIp, port);
-            // 注册 RPC 服务地址
-            if (serviceRegister != null) {
-                for (String interfaceName : handlerMap.keySet()) {
-                    serviceRegister.register(interfaceName, serviceAddress);
-                    LOGGER.info("register service: interfaceName = {} => serviceAddress = {}", interfaceName, serviceAddress);
+        new Thread(()->{
+            try {
+                ServerBootstrap serverBootstrap = new ServerBootstrap();
+                serverBootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class).
+                        childHandler(new ChannelInitializer<SocketChannel>() {
+                            @Override
+                            public void initChannel(SocketChannel channel) throws Exception {
+                                ChannelPipeline pipeline = channel.pipeline();
+                                pipeline.addLast(new RpcEncoder(RpcResponse.class));
+                                pipeline.addLast(new RpcDecoder(RpcRequest.class));
+                                pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+                                pipeline.addLast(new RpcServerHandler(handlerMap));
+                            }
+                        });
+                serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
+                serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+                // 获取 RPC 服务器的 IP 地址与端口号
+                String localHostIp = IpAddressUtil.getLocalHostIpAddress();
+                String serviceAddress = localHostIp + ":" + port;
+                // 启动 RPC 服务器
+                ChannelFuture channelFuture = serverBootstrap.bind(localHostIp, port).sync();
+                //ChannelFuture channelFuture = serverBootstrap.bind(localHostIp, port);
+                // 注册 RPC 服务地址
+                if (serviceRegister != null) {
+                    for (String interfaceName : handlerMap.keySet()) {
+                        serviceRegister.register(interfaceName, serviceAddress);
+                        LOGGER.info("register service: interfaceName = {} => serviceAddress = {}", interfaceName, serviceAddress);
+                    }
                 }
+                channelFuture.channel().closeFuture().sync();
+                //channelFuture.syncUninterruptibly();
+            } catch (Exception e) {
+                LOGGER.error("RpcServerInitializer Exception",e);
+            } finally {
+                bossGroup.shutdownGracefully();
+                workGroup.shutdownGracefully();
             }
-            //channelFuture.channel().closeFuture().sync();
-            channelFuture.syncUninterruptibly();
-        } catch (Exception e) {
-            LOGGER.error("RpcServerInitializer Exception",e);
-        } finally {
-            bossGroup.shutdownGracefully();
-            workGroup.shutdownGracefully();
-        }
+        }).start();
+
 
     }
     public void setPort(int port) {

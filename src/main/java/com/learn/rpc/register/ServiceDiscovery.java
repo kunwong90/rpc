@@ -36,6 +36,6 @@ public class ServiceDiscovery {
             throw new RuntimeException(String.format("can not find any address node on path: %s", servicePath));
         }
         //return loadBalance.select(addressList);
-        return null;
+        return addressList.get(0);
     }
 }
