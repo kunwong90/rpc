@@ -31,6 +31,11 @@ public class RpcRequest implements Serializable {
      */
     private Object[] parameters;
 
+    /**
+     * 接口实现编码
+     */
+    private String implCode;
+
     public String getRequestId() {
         return requestId;
     }
@@ -79,6 +84,14 @@ public class RpcRequest implements Serializable {
         this.parameters = parameters;
     }
 
+    public String getImplCode() {
+        return implCode;
+    }
+
+    public void setImplCode(String implCode) {
+        this.implCode = implCode;
+    }
+
     @Override
     public String toString() {
         return "RpcRequest{" +
@@ -88,6 +101,7 @@ public class RpcRequest implements Serializable {
                 ", methodName='" + methodName + '\'' +
                 ", parameterTypes=" + Arrays.toString(parameterTypes) +
                 ", parameters=" + Arrays.toString(parameters) +
+                ", implCode='" + implCode + '\'' +
                 '}';
     }
 }

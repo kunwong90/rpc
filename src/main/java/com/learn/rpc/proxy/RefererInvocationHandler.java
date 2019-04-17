@@ -45,10 +45,11 @@ public class RefererInvocationHandler<T> extends AbstractRefererHandler<T> imple
         request.setParameterTypes(method.getParameterTypes());*/
         RpcRequest request = new RpcRequest();
         request.setInterfaceName(interfaceName);
+        request.setImplCode(implCode);
         request.setMethodName(method.getName());
         request.setRequestId(String.valueOf(RequestIdGenerator.getRequestId()));
         request.setParameterTypes(method.getParameterTypes());
-        request.setParameters(method.getParameters());
+        request.setParameters(args);
         return invokeRequest(request);
     }
 

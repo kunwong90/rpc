@@ -5,6 +5,7 @@ import com.learn.rpc.protocol.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,14 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
         LOGGER.info("client request info : {}", ctx.channel().remoteAddress() + ", " + request);
         String interfaceName = request.getInterfaceName();
-        Object bean = beanMap.get(interfaceName);
+        String implCode = request.getImplCode();
+        Object bean;
+        if (StringUtils.isNotBlank(implCode)) {
+            bean = beanMap.get(interfaceName + "#" + implCode);
+        } else {
+            bean = beanMap.get(interfaceName);
+        }
+
         Class[] parameterTypes = request.getParameterTypes();
         Object[] parameters = request.getParameters();
         String methodName = request.getMethodName();

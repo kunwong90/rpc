@@ -10,7 +10,7 @@ public class HelloServiceI2mpl implements HelloService {
 
     @Override
     public String hello(String name) {
-        return "Hello " + name;
+        return getClass().getName() + "Hello " + name;
     }
 
 
